@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceder a base de datos de Notion</title>
+</head>
+<body>
+    <h1>Datos de la base de datos de Notion</h1>
+    <pre id="result"></pre>
+
+    <script>
+        // El token de la integración (Asegúrate de mantenerlo seguro)
+        const notionToken = 'secret_H2x1E2yG1Er6W3ACtlMD7dCjJfKotImE2JZ5LiNNUgc';
+
+     
+
+        // La URL de la API de Notion para consultar la base de datos
+        const url = `https://api.notion.com/v1/users`;
+
+        // Hacer la solicitud a la API
+        fetch(url, {
+            method: 'GET',  // 'POST' es el método que necesitas para consultar una base de datos
+            headers: {
+                'Authorization': `Bearer ${notionToken}`, // Token de la integración
+                'Notion-Version': '2022-06-28',  // Especificar la versión de la API
+                'Content-Type': 'application/json'  // Definir el formato de los datos
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Error: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Mostrar los resultados en el HTML
+            document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+        })
+        .catch(error => {
+            console.error('Error al hacer la solicitud:', error);
+            document.getElementById('result').textContent = `Error: ${error.message}`;
+        });
+    </script>
+</body>
+</html>
